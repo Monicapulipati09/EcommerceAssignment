@@ -66,27 +66,8 @@ def add_to_cart(request):
     ordered_product, created = OrderedProducts.objects.get_or_create(
         product=product,
         ordered=False
-    )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.products.filter(product=product).exists():
-            ordered_product.quantity += 1
-            ordered_product.save()
-            messages.info(request, "This item quantity was updated.")
-            return redirect("core:order-summary")
-        else:
-            order.products.add(ordered_product)
-            messages.info(request, "This item was added to your cart.")
-            return redirect("core:order-summary")
-    else:
-        ordered_date = timezone.now()
-        order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
-        order.products.add(ordered_product)
-        messages.info(request, "This item was added to your cart.")
-        return redirect("core:order-summary")
+    
+       
 
 def order_review(request):
     context ={}
