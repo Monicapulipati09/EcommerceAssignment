@@ -9,7 +9,8 @@
             <div class= "box-element product">
                 <h4>{{ product.product_name }}</h4>
                 <p >Price - {{ product.price }}</p>
-                <a class="aa-add-card-btn" href="#" data-objid="{{product.id}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                <!-- <a class="aa-add-card-btn" href="#" data-objid="{{product.id}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a> -->
                 <a href="detailed_view" class="btn btn-primary">View Product</a>
             </div>
         </div>
@@ -17,7 +18,7 @@
 </div>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
     $('.aa-add-card-btn').click(function(){
     var objid;
@@ -32,7 +33,7 @@
         success: function( data )
     });
 });
-</script>
+</script> -->
 
 
 {% endblock content %}

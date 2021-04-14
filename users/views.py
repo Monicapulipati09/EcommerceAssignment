@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserForm
@@ -61,12 +62,17 @@ def logout_req(request):
 	messages.info(request, "You have successfully logged out.") 
 	return redirect("../shop")
 
-def add_to_cart(request):
-    product_id = request.POST['product_id']
+@login_required
+def add_to_cart(request, product_id):
     product = Product.objects.get(id=product_id)
+    order, created = Order.objects.get_or_create(user=request.user, ordered=False)
     ordered_product, created = OrderedProducts.objects.get_or_create(
-        product=product,
-        ordered=False)
+        order=order,
+        product=product
+    )
+    ordered_product.quantity = (ordered_product.quantity +1)
+    ordered_product.save()
+    return redirect("../../")
          
 def order_review(request):
     context ={}
