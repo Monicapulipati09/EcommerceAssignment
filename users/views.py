@@ -52,8 +52,9 @@ def cart(request):
     return render(request, 'users/cart.html', context)
     
 def checkout(request):
-    products = Product.objects.all()
-    return render(request, 'users/checkout.html', {'products':products})
+
+    order = Order.objects.all()
+    return render(request, 'users/checkout.html', {'products':order})
 
 def logout_req(request):
 	logout(request)
@@ -65,10 +66,8 @@ def add_to_cart(request):
     product = Product.objects.get(id=product_id)
     ordered_product, created = OrderedProducts.objects.get_or_create(
         product=product,
-        ordered=False
-    
-       
-
+        ordered=False)
+         
 def order_review(request):
     context ={}
     return render(request, "users/order_review.html", context)
