@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% if items %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Item title</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Total Item Price</th>
+        </tr>
+        </thead>
+        <tbody>
+            
+        {% for it in  items %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ it.product.product_name }}</td>
+                <td>{{ it.product.price }}</td>
+                <td>
+                    {{ it.quantity }}
+                </td>
+                <td>{{ it.get_total_item_price }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>  
+        
+{% else %}
+            <p> Your Cart is empty </p>
+{% endif %}
+<table class="table">
+    <tr>
+        <th><h5>Items: {{ order.get_total_items }}</h5></th>
+        <th><h5>Total Price: {{ order.get_total_cart_value }}</h5></th>
+    </tr>
+</table>
+    
+<table>
+    <tr>
+        <td colspan="5">
+        <a class='btn btn-warning float-right ml-2' href='/users/checkout/'>Proceed to checkout</a>
+        <a class='btn btn-primary float-right' href='/users/shop/'>Continue shopping</a>
+        </td>
+    </tr>
+</table>
+
+{% endblock content %}

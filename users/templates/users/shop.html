@@ -1,0 +1,38 @@
+{% extends 'users/home.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    {% for product in products %}
+        <div class="col-lg-4">
+            <img  width=100 src="{{ product.product_image.url }}" alt="Image Unavailable">
+            <div class= "box-element product">
+                <h4>{{ product.product_name }}</h4>
+                <p >Price - {{ product.price }}</p>
+                <a class="aa-add-card-btn" href="#" data-objid="{{product.id}}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                <a href="detailed_view" class="btn btn-primary">View Product</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+<script type="text/javascript">
+
+    $('.aa-add-card-btn').click(function(){
+    var objid;
+    objid = $(this).attr("data-objid");
+    $.ajax(
+    {
+        type:"POST",
+        url: "/add_to_cart/",
+        data:{
+                 product_id: objid
+        },
+        success: function( data )
+    });
+});
+</script>
+
+
+{% endblock content %}
