@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserForm
+from .forms import UserForm, AddressForm
 from .models import *
 
 
@@ -43,9 +43,13 @@ def shop(request):
     return render(request, 'users/shop.html', {'products':products})
 
 def cart(request):
-    
-    order = Order.objects.get(user=request.user, ordered=False)
-    items= order.orderedproducts_set.all()
+    try:
+        order = Order.objects.get(user=request.user, ordered=False)
+        items= order.orderedproducts_set.all()
+    except:
+        order = None
+        items = None
+
     context = {
         'items': items,
         'order': order,
@@ -53,9 +57,24 @@ def cart(request):
     return render(request, 'users/cart.html', context)
     
 def checkout(request):
-
-    order = Order.objects.all()
-    return render(request, 'users/checkout.html', {'products':order})
+    if request.method =="POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address=form.save()
+        order = Order.objects.get(user=request.user, ordered=False)
+        order.ordered = True
+        order.save()
+        return redirect("order_review")
+    else:    
+        order = Order.objects.get(user=request.user, ordered=False)
+        items= order.orderedproducts_set.all()
+        form = AddressForm()
+        context = {
+            'items': items,
+            'order': order,
+            'form':form
+        }
+        return render(request, 'users/checkout.html', context)
 
 def logout_req(request):
 	logout(request)

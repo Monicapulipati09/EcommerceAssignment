@@ -29,24 +29,31 @@
         {% endfor %}
         </tbody>
     </table>  
+    <table class="table">
+        <tr>
+            <th><h5>Items: {{ order.get_total_items }}</h5></th>
+            <th><h5>Total Price: {{ order.get_total_cart_value }}</h5></th>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td colspan="5">
+            <a class='btn btn-warning float-right ml-2' href='/users/checkout/'>Proceed to checkout</a>
+            <a class='btn btn-primary float-right' href='/users/shop/'>Continue shopping</a>
+            </td>
+        </tr>
+    </table>
         
 {% else %}
             <p> Your Cart is empty </p>
+            <table>
+                <tr>
+                    <td colspan="5">
+                    <a class='btn btn-primary float-right' href='/users/shop/'>Continue shopping</a>
+                    </td>
+                </tr>
+            </table>
 {% endif %}
-<table class="table">
-    <tr>
-        <th><h5>Items: {{ order.get_total_items }}</h5></th>
-        <th><h5>Total Price: {{ order.get_total_cart_value }}</h5></th>
-    </tr>
-</table>
-    
-<table>
-    <tr>
-        <td colspan="5">
-        <a class='btn btn-warning float-right ml-2' href='/users/checkout/'>Proceed to checkout</a>
-        <a class='btn btn-primary float-right' href='/users/shop/'>Continue shopping</a>
-        </td>
-    </tr>
-</table>
+
 
 {% endblock content %}

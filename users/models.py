@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from datetime import datetime
 
 # Create your models here.
 class Product(models.Model):
@@ -15,7 +16,7 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
     order_id = models.CharField(max_length=200, default = 1)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateTimeField(default = datetime.now())
     ordered = models.BooleanField(default=False)
     shipping_address = models.ForeignKey(
         'Address', related_name='shipping_address', on_delete=models.SET_NULL, blank=True, null=True)
@@ -36,7 +37,7 @@ class OrderedProducts(models.Model):
     
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null = True, blank= True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=0)
 
     @property
     def get_total_item_price(self):
