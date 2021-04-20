@@ -30,6 +30,7 @@
             <div class="form-inline my-2 my-lg-0">
                 <a href="{% url 'logout' %}">Logout</a>
                 <p>Welcome, {{user.username}}</p>
+                <a href="{% url 'order_review' %}">Orders</a>
                 <a href="{% url 'cart' %}">
                     <img  width =50 id="cart-icon" src="{% static 'images/cart.png' %}">
                             </a>

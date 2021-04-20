@@ -11,7 +11,6 @@ class Product(models.Model):
     available_quantity = models.IntegerField(default= 1)
  
 
-
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)

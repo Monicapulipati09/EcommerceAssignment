@@ -13,17 +13,17 @@
     </div>
     <div class="col-lg-6">
         <h3>Order Summary</h3>
-    <table class="table">
-        <tbody>
-        {% for it in  items %}
-            <tr>
-                <td>{{ it.product.product_name }}</td>
-                <td>{{ it.product.price }}</td>
-                <td>{{ it.quantity }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>  
+        <table class="table">
+            <tbody>
+            {% for it in  items %}
+                <tr>
+                    <td>{{ it.product.product_name }}</td>
+                    <td>{{ it.product.price }}</td>
+                    <td>{{ it.quantity }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         <h5>Items: {{ order.get_total_items }}</h5>
         <h5>Total Price: {{ order.get_total_cart_value }}</h5>
     </div>

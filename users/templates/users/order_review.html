@@ -1,6 +1,25 @@
-{% extends 'users/home.html' %}
-{% load static %}
 
+{% extends 'base.html' %}
+{% load static %}
 {% block content %}
-   <h3> Order placed Successfully</h3>
+{% if items %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Item title</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for it in  items %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ it.product.product_name }}</td>
+                <td><p>Ordered</p></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>  
+{% endif %}
 {% endblock content %}

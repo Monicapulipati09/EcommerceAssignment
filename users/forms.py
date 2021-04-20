@@ -7,13 +7,25 @@ from django.forms import ModelForm
 
 class UserForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
-class AddressForm(ModelForm):
+class AddressForm(forms.Form):
 
-	class Meta:
-		model = Address
-		fields = "__all__"
+	street_address = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Street'
+    }))
+	apartment_address = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Apartment'
+    }))
+	country = forms.CharField(required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Apartment'
+    }))
+	zip = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Zip code'
+    }))

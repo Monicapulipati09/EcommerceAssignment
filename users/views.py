@@ -30,7 +30,7 @@ def login_req(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("../shop/")
+				return redirect("/users/shop/")
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
@@ -43,13 +43,12 @@ def shop(request):
     return render(request, 'users/shop.html', {'products':products})
 
 def cart(request):
-    try:
-        order = Order.objects.get(user=request.user, ordered=False)
+    order = Order.objects.get(user=request.user, ordered=False)
+    if order:
         items= order.orderedproducts_set.all()
-    except:
-        order = None
-        items = None
-
+    else:
+        items = []
+   
     context = {
         'items': items,
         'order': order,
@@ -60,12 +59,24 @@ def checkout(request):
     if request.method =="POST":
         form = AddressForm(request.POST)
         if form.is_valid():
-            address=form.save()
+            street_address = form.cleaned_data.get('street_address')
+            apartment_address = form.cleaned_data.get('apartment_address')
+            country = form.cleaned_data.get('country')
+            zip = form.cleaned_data.get('zip')
+            address = Address(
+                    user=request.user,
+                    street_address=street_address,
+                    apartment_address=apartment_address,
+                    country=country,
+                    zip=zip
+                )
+            address.save()
         order = Order.objects.get(user=request.user, ordered=False)
         order.ordered = True
         order.save()
         return redirect("order_review")
     else:    
+
         order = Order.objects.get(user=request.user, ordered=False)
         items= order.orderedproducts_set.all()
         form = AddressForm()
@@ -79,7 +90,7 @@ def checkout(request):
 def logout_req(request):
 	logout(request)
 	messages.info(request, "You have successfully logged out.") 
-	return redirect("../shop")
+	return redirect("/users/shop")
 
 @login_required
 def add_to_cart(request, product_id):
@@ -91,8 +102,16 @@ def add_to_cart(request, product_id):
     )
     ordered_product.quantity = (ordered_product.quantity +1)
     ordered_product.save()
-    return redirect("../../")
+    return redirect("/users/shop/")
          
 def order_review(request):
-    context ={}
-    return render(request, "users/order_review.html", context)
+    items_list = []
+    orders = Order.objects.filter(user=request.user, ordered=True)
+    for order in orders:
+        items= order.orderedproducts_set.all()
+        items_list.append(items)
+    context = {
+        'items': items,
+        'order': order,
+    }
+    return render(request, 'users/order_review.html', context)
