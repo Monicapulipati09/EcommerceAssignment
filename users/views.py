@@ -43,10 +43,11 @@ def shop(request):
     return render(request, 'users/shop.html', {'products':products})
 
 def cart(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-    if order:
+    try:
+        order = Order.objects.get(user=request.user, ordered=False)
         items= order.orderedproducts_set.all()
-    else:
+    except:
+        order = []
         items = []
    
     context = {
